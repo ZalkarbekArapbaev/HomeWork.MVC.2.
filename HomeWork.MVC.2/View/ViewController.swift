@@ -103,6 +103,10 @@ class ViewController: UIViewController {
               secondViewController.secondOld = pass!
           } else {
               print("wrong")
+              let secondViewController = SecondViewController()
+              navigationController?.pushViewController(secondViewController, animated: true)
+              secondViewController.secondUser = "you are wrong"
+              secondViewController.secondOld = "you are wrong"
           }
       }
     }
