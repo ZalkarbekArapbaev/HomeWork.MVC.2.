@@ -24,11 +24,19 @@ class ViewController: UIViewController {
         return textfield
     }()
     
-    private lazy var getButton: UIButton = {
+    private lazy var setButton: UIButton = {
         let button = UIButton()
-        button.setTitle("OK", for: .normal)
+        button.setTitle("SET", for: .normal)
         button.backgroundColor = .brown
         button.addTarget(self, action: #selector(Save), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var getButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("GET", for: .normal)
+        button.backgroundColor = .brown
+        button.addTarget(self, action: #selector(Dave), for: .touchUpInside)
         return button
     }()
     
@@ -59,9 +67,16 @@ class ViewController: UIViewController {
             make.width.equalTo(300)
             make.height.equalTo(50)
         }
+        view.addSubview(setButton)
+        setButton.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(300)
+            make.left.equalTo(view.snp.left).offset(50)
+            make.width.equalTo(300)
+            make.height.equalTo(50)
+        }
         view.addSubview(getButton)
         getButton.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(300)
+            make.top.equalTo(view.snp.top).offset(400)
             make.left.equalTo(view.snp.left).offset(50)
             make.width.equalTo(300)
             make.height.equalTo(50)
@@ -73,28 +88,23 @@ class ViewController: UIViewController {
         guard let pass = oldtextField.text else { return }
         
         controller?.setToModel(user: user, pass: pass)
-        
-        let secondViewController = SecondViewController()
-        navigationController?.pushViewController(secondViewController, animated: true)
-        controller?.getFromModel()
-        if serviceStore.users[user] != nil {
-            if pass == serviceStore.users[user]! {
-                secondViewController.secondUser = user
-                secondViewController.secondOld = pass
-                secondViewController.navigationItem.title = "You have successfully registered!!!"
-                print("succes")
-            } else {
-                print("wrong")
-                secondViewController.secondUser = "You are wrong"
-                secondViewController.secondOld = "You are wrong"
-                secondViewController.navigationItem.title = "You spelled it wrong!!!"
-            }
-        } else {
-            print("you need to registr")
-            secondViewController.secondUser = "You are wrong"
-            secondViewController.secondOld = "You are wrong"
-            secondViewController.navigationItem.title = "You spelled it wrong!!!"
-        }
+    }
+    
+    @objc func Dave() {
+        let user = usertextField.text
+        let pass = oldtextField.text
+      
+      if controller?.getFromModel()[user!] != nil {
+//            if controller?.getFromModel()[pass!] == controller?.getFromModel()[user!] {
+          if pass == controller?.getFromModel()[user!] {
+              let secondViewController = SecondViewController()
+              navigationController?.pushViewController(secondViewController, animated: true)
+              secondViewController.secondUser = user!
+              secondViewController.secondOld = pass!
+          } else {
+              print("wrong")
+          }
+      }
     }
 
 }
